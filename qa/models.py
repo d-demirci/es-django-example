@@ -26,7 +26,7 @@ class User(models.Model):
         }
 
 class Post(models.Model):
-    owner = models.ForeignKey(User, blank=True, null=True)
+    owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     creation_date = models.DateTimeField()
     last_activity_date = models.DateTimeField()
     rating = models.IntegerField()
@@ -64,10 +64,10 @@ class Question(Post):
     favorite_count = models.PositiveIntegerField()
     view_count = models.PositiveIntegerField()
     accepted_answer = models.ForeignKey('Answer', related_name='accepted_for',
-            null=True, blank=True)
+            null=True, blank=True, on_delete=models.DO_NOTHING)
 
     last_editor = models.ForeignKey(User, null=True, blank=True,
-            related_name='last_edited_questions')
+            related_name='last_edited_questions' , on_delete=models.DO_NOTHING)
     last_edit_date  = models.DateTimeField(null=True, blank=True)
 
     @property
@@ -99,14 +99,13 @@ class Question(Post):
         return QuestionDoc(**d)
 
 class Answer(Post):
-    question = models.ForeignKey(Question)
-
+    question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
     def to_search(self):
         d = super(Answer, self).to_search()
         return AnswerDoc(meta={'id': d.pop('_id'), 'parent': self.question_id}, **d)
 
 class Comment(models.Model):
-    owner = models.ForeignKey(User, blank=True, null=True)
+    owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     creation_date = models.DateTimeField()
     rating = models.IntegerField()
     text = models.TextField()
@@ -127,11 +126,11 @@ class Comment(models.Model):
 
 
 class QuestionComment(Comment):
-    post = models.ForeignKey(Question, related_name='comment_set')
+    post = models.ForeignKey(Question, related_name='comment_set', on_delete=models.DO_NOTHING)
 
 
 class AnswerComment(Comment):
-    post = models.ForeignKey(Answer, related_name='comment_set')
+    post = models.ForeignKey(Answer, related_name='comment_set', on_delete=models.DO_NOTHING)
 
 
 def update_search(instance, **kwargs):

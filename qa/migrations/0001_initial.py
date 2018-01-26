@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('favorite_count', models.PositiveIntegerField()),
                 ('view_count', models.PositiveIntegerField()),
                 ('last_edit_date', models.DateTimeField(null=True, blank=True)),
-                ('accepted_answer', models.ForeignKey(null=True, related_name='accepted_for', to='qa.Answer', blank=True)),
+                ('accepted_answer', models.ForeignKey(null=True, related_name='accepted_for', to='qa.Answer', blank=True, on_delete=models.DO_NOTHING)),
             ],
             options={
                 'abstract': False,
@@ -88,41 +88,41 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='questioncomment',
             name='owner',
-            field=models.ForeignKey(to='qa.User'),
+            field=models.ForeignKey(to='qa.User', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='questioncomment',
             name='post',
-            field=models.ForeignKey(related_name='comment_set', to='qa.Question'),
+            field=models.ForeignKey(related_name='comment_set', to='qa.Question', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='question',
             name='last_editor',
-            field=models.ForeignKey(null=True, related_name='last_edited_questions', to='qa.User', blank=True),
+            field=models.ForeignKey(null=True, related_name='last_edited_questions', to='qa.User', blank=True, on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='question',
             name='owner',
-            field=models.ForeignKey(to='qa.User'),
+            field=models.ForeignKey(to='qa.User', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='answercomment',
             name='owner',
-            field=models.ForeignKey(to='qa.User'),
+            field=models.ForeignKey(to='qa.User', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='answercomment',
             name='post',
-            field=models.ForeignKey(related_name='comment_set', to='qa.Answer'),
+            field=models.ForeignKey(related_name='comment_set', to='qa.Answer', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='answer',
             name='owner',
-            field=models.ForeignKey(to='qa.User'),
+            field=models.ForeignKey(to='qa.User', on_delete=models.DO_NOTHING),
         ),
         migrations.AddField(
             model_name='answer',
             name='question',
-            field=models.ForeignKey(to='qa.Question'),
+            field=models.ForeignKey(to='qa.Question', on_delete=models.DO_NOTHING),
         ),
     ]
